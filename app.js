@@ -6,10 +6,13 @@ angular.module('app', [])
 	return {  // This is a DDO, directive definition object
 		restrict: 'E',
 		transclude: true,
-		template: '<h2>Hello world!</h2> <div role="tabpanel" ng-transclude></div>',
+		template: '<div role="tabpanel" ng-show="active" ng-transclude></div>',
 		require: '^tabset', // instructs directive to move up the scope hierarchy one level and look for controller
-		scope: {}, // isolated scope
+		scope: {
+			heading: '@' // scope prop should be string
+		}, // isolated scope
 		link: function(scope, elem, attr, tabsetCtrl) {
+			scope.active = false; 
 			tabsetCtrl.addTab(scope);
 		}
 	}
@@ -30,6 +33,10 @@ angular.module('app', [])
 
 			self.addTab = function addTab(tab) {
 				self.tabs.push(tab);
+
+				if(self.tabs.length === 1) {
+					tab.active = true; 
+				}
 			}
 		}
 	}
