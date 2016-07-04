@@ -13,6 +13,14 @@ angular.module('app', [])
 		}, // isolated scope
 		link: function(scope, elem, attr, tabsetCtrl) {
 			scope.active = false; 
+
+			scope.disabled = false; 
+			if(attr.disable) {
+				attr.$observe('disable', function(value) {
+					scope.disabled = (value !== 'false');
+				})
+			}
+
 			tabsetCtrl.addTab(scope);
 		}
 	}
@@ -30,6 +38,15 @@ angular.module('app', [])
 			// using a controller allows us to inject the tabset controller instance into each of the tab link functions
 			var self = this; // ES6???
 			self.tabs = []
+
+			self.select = function(selectedTab) {
+				angular.forEach(self.tabs, function(tab) {
+					if(tab.active && tab !== selectedTab) {
+						tab.active = false;
+					}
+				})
+				selectedTab.active = true; 
+			}
 
 			self.addTab = function addTab(tab) {
 				self.tabs.push(tab);
