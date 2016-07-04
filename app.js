@@ -40,6 +40,8 @@ angular.module('app', [])
 			self.tabs = []
 
 			self.select = function(selectedTab) {
+				// if disabled, don't do anything
+				if(selectedTab.disabled) { return; }
 				angular.forEach(self.tabs, function(tab) {
 					if(tab.active && tab !== selectedTab) {
 						tab.active = false;
