@@ -30,7 +30,9 @@ angular.module('app', [])
 	return {
 		restrict: 'E',
 		transclude: 'true',
-		scope: {},
+		scope: {
+			type: '@',
+		},
 		templateUrl: 'tabset.html',
 		bindToController: 'true',
 		controllerAs: 'tabset', // allows us to bind properties directly to controller. Removes dependency on $scope
@@ -38,6 +40,16 @@ angular.module('app', [])
 			// using a controller allows us to inject the tabset controller instance into each of the tab link functions
 			var self = this; // ES6???
 			self.tabs = []
+
+			self.classes = {}
+
+			// can access type prop because of bindToController, otherwise would have to inject $scope
+			if(self.type === 'pills') {
+				self.classes['nav-pills'] = true;
+			} else {
+				// tabs by default
+				self.classes['nav-tabs'] = true;
+			}
 
 			self.select = function(selectedTab) {
 				// if disabled, don't do anything
